@@ -1,24 +1,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-
-int queue[20],a,b,n,head,end,i,j;
-void sort()
-{
-  for(int i=0;i<n-1;i++)
-  {
-    for(int j=0;j<n-i-1;j++)
-    {
-      if(queue[j]>queue[j+1])
-      {
-        int temp=queue[j];
-        queue[j]=queue[j+1];
-        queue[j+1]=temp;
-      }
-    }
-  }
-}
-
+int queue[20],a,b,n,head,end,i,j,avg=0;
 void fcfs()
 {
   int seektime=0,s;
@@ -35,34 +18,46 @@ void fcfs()
     printf("%d\t",queue[i]);
   }
   printf("\n");
+  float avg = seektime/n;
+  printf("Average seek time = %f \n",avg);
 }
-
+void ascsort()
+{
+  for(int i=0;i<n-1;i++)
+  {
+    for(int j=0;j<n-i-1;j++)
+    {
+      if(queue[j]>queue[j+1])
+      {
+        int temp=queue[j];
+        queue[j]=queue[j+1];
+        queue[j+1]=temp;
+      }
+    }
+  }
+}
 void scan()
 {
-  int k[20],seek=0,diff,size;
-  sort();
-  printf("The order is:\n%d->",head);
+  float seek=0;
+  ascsort();
+  printf("The sequence is \n%d ",head);
   int i=0,temp=-1;
   while(queue[i]<head)
     i++;
   temp=i;
   while(i!=n)
   {
-    printf("%d->",queue[i]);
+    printf("%d ",queue[i]);
     i++;
   }
-  printf("%d->",end);
+  printf("%d ",end);
   i=temp;
   if(temp-1>=0)
       i=temp-1;
   while(i>=0)
   {
-    printf("%d->",queue[i]);
+    printf("%d ",queue[i]);
     i--;
-  }
-  if(i==-1)
-  {
-    printf("END\n");
   }
   for(i=0;i<n;i++)
   {
@@ -72,64 +67,63 @@ void scan()
     }      
   }
   seek=abs((end-head)+(end-a));
-  printf("\nSeek Time is %d\n",seek);
+  printf("\nSeek Time is \n%f",seek);
+  printf("\nAverage seek time\n%f",seek/n);
 }
-
 void cscan()
 {
-  sort();
+  ascsort();
   int seek;
-  printf("The order is\n%d->",head);
+  printf("The sequence is\n%d ",head);
   int i=0,temp=-1;
   while(queue[i]<head)
     i++;
   while(i!=n)
   {
-    printf("%d->",queue[i]);
+    printf("%d ",queue[i]);
     i++;
   }
-  printf("%d->0->",end);
+  printf("%d 0 ",end);
   i=0;
   while(queue[i]<head)
   {
-    printf("%d->",queue[i]);
+    printf("%d ",queue[i]);
     i++;
   }
-  printf("END\n");
-  j=0;
+  j=1;
   while (queue[j]<head)
   {
+    b=queue[j];
     j++;
-    b=queue[j-1];
   }
   printf("%d\n",b);
   seek=abs((end-head)+(end-0)+(b-0));
-  printf("%d",seek);
+  printf("Seek time is\n%d\n",seek);
+  printf("Average seek time \n");
+  printf("%d",seek/n);
 }
-
 int main()
 {
   int x;
   int ch;
-  printf("Enter head\n");
+  printf("Enter head position\n");
   scanf("%d",&head);
-  printf("Enter the end position of the disk\n");
+  printf("Enter end position\n");
   scanf("%d",&end);
   printf("Enter the number of disk scheduling needed\n");
   scanf("%d",&n);
   printf("Enter the positions\n");
   for(i=0;i<n;i++)
   {
-    printf("Position %d\n",i);
+    printf("Position %d : ",i);
     scanf("%d",&queue[i]);
     printf("\n");
   }
   do
   {
-    printf("Choose the disk scheduling algorithm\n");
+    printf("Select algorithm\n");
     printf("\n1.FCFS\n2.SCAN\n3.CSCAN\n");
     scanf("%d",&x);
-    
     switch(x)
     {
       case 1: fcfs();
